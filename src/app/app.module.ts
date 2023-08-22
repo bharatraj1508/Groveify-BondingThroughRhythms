@@ -7,6 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LandingPageComponent } from './layout/landing-page/landing-page.component';
+import { NavbarComponent } from './layout/navbar/navbar.component';
+import { AlbumsComponent } from './pages/albums/albums.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +16,8 @@ import { LandingPageComponent } from './layout/landing-page/landing-page.compone
     ProfileComponent,
     HeaderComponent,
     LandingPageComponent,
+    NavbarComponent,
+    AlbumsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
