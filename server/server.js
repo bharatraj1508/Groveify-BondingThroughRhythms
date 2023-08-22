@@ -7,6 +7,7 @@ var cookieParser = require("cookie-parser");
 var client_id = "885eb39e5f254525b7d2c9fe2d156e97"; // Your client id
 var client_secret = "a9087dc6606a4ab692a0b3a528538560"; // Your secret
 var redirect_uri = "http://localhost:8888/callback";
+const sessions = {};
 
 /**
  * Generates a random string containing numbers and letters
@@ -82,13 +83,14 @@ app.get("/callback", (req, res) => {
 
     request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        const tokenObj = {
-          access_token: body.access_token,
-          refresh_token: body.refresh_token,
-        };
-        res.redirect(
-          `http://localhost:4200/user-info?t=${body.access_token}&r=${body.refresh_token}`
-        );
+        const sessionIdentifier = generateRandomString(16);
+          sessions[sessionIdentifier] = {
+            access_token: body.access_token,
+            refresh_token: body.refresh_token,
+          };
+          res.redirect(
+            `http://localhost:4200/user-info?session=${sessionIdentifier}`
+          );
       } else {
         res.redirect(
           "/#" +
@@ -100,6 +102,18 @@ app.get("/callback", (req, res) => {
     });
   }
 });
+// Inside your backend API route
+app.get('/get-tokens', (req, res) => {
+  const sessionIdentifier = req.query.session;
+
+  if (sessionIdentifier && sessions[sessionIdentifier]) {
+    const tokenObj = sessions[sessionIdentifier];
+    res.json(tokenObj);
+  } else {
+    res.status(404).json({ error: 'Session not found' });
+  }
+});
+
 
 app.listen(8888, () => {
   console.log("Server listening on port 8888");
