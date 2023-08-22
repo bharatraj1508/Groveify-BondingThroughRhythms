@@ -1,0 +1,10 @@
+<div>
+  <div *ngIf="!token">
+    <a href="http://localhost:8888/login">Login to Spotify</a>
+  </div>
+  <div *ngIf="token">
+    <a href="http://localhost:4200/">
+      <button (click)="logout()">Log out</button>
+    </a>
+  </div>
+</div>
