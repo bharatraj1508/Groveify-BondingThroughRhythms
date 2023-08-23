@@ -7,19 +7,46 @@ import { Observable } from 'rxjs';
 })
 export class AlbumService {
 
-
-  id = "4aawyAB9vmqN3uQ7FjRGTy";
-  endpoint: string = `https://api.spotify.com/v1/albums/${this.id}`;
+  base_url: string = 'https://api.spotify.com/v1';
 
   constructor(private http: HttpClient) {}
 
   getAlbums(): Observable<any> {
-    // Set the headers with the Authorization token
+  
+    const id = "4aawyAB9vmqN3uQ7FjRGTy";
+    const endpoint= `${this.base_url}/albums/${id}`;
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     });
-
+    console.log(headers)
     // Use the HttpClient to make the GET request
-    return this.http.get(this.endpoint, { headers: headers });
+    return this.http.get(endpoint, { headers: headers });
+  }
+
+  searchArtist(name: string): Observable<any> {
+  
+    console.log(name);
+    const endpoint= `${this.base_url}/search?q=${name}&type=artist`;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    });
+    // Use the HttpClient to make the GET request
+    return this.http.get(endpoint, { headers: headers });
+  }
+
+  getArtists(id: string): Observable<any> {
+  
+
+    console.log(id)
+    const endpoint= `${this.base_url}/artists/${id}/albums`;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    });
+    
+    // Use the HttpClient to make the GET request
+    return this.http.get(endpoint, { headers: headers });
   }
 }
