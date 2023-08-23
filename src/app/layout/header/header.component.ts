@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user_info_tokens');
     this.tokenService.setToken(null); // Notify TokenService about token removal
   }
 }
