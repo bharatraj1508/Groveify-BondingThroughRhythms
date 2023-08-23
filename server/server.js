@@ -83,14 +83,35 @@ app.get("/callback", (req, res) => {
 
     request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
+        var access_token = body.access_token,
+          refresh_token = body.refresh_token,
+          userProfile = null;
+
+        var options = {
+          url: "https://api.spotify.com/v1/me",
+          headers: { Authorization: "Bearer " + access_token },
+          json: true,
+        };
+
         const sessionIdentifier = generateRandomString(16);
-          sessions[sessionIdentifier] = {
-            access_token: body.access_token,
-            refresh_token: body.refresh_token,
-          };
+
+        // use the access token to access the Spotify Web API
+        request.get(options, function (error, response, body) {
+          if (error) {
+            console.log(error);
+          } else {
+            userProfile = body;
+
+            sessions[sessionIdentifier] = {
+              access_token: access_token,
+              refresh_token: refresh_token,
+              user_profile: userProfile,
+            };
+          }
           res.redirect(
             `http://localhost:4200/user-info?session=${sessionIdentifier}`
           );
+        });
       } else {
         res.redirect(
           "/#" +
@@ -103,17 +124,16 @@ app.get("/callback", (req, res) => {
   }
 });
 // Inside your backend API route
-app.get('/get-tokens', (req, res) => {
+app.get("/get-tokens", (req, res) => {
   const sessionIdentifier = req.query.session;
 
   if (sessionIdentifier && sessions[sessionIdentifier]) {
-    const tokenObj = sessions[sessionIdentifier];
-    res.json(tokenObj);
+    const userObj = sessions[sessionIdentifier];
+    res.json(userObj);
   } else {
-    res.status(404).json({ error: 'Session not found' });
+    res.status(404).json({ error: "Session not found" });
   }
 });
-
 
 app.listen(8888, () => {
   console.log("Server listening on port 8888");
