@@ -1,0 +1,17 @@
+<div>
+    <h2>Search for Artist</h2>
+    <form (ngSubmit)="submitForm()" #userForm="ngForm">
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" [(ngModel)]="name" required>
+      </div>
+      <button type="submit" [disabled]="!userForm.valid">Submit</button>
+    </form>
+
+    <div *ngIf="artist">
+    
+      <pre>{{ artist | json }}</pre>
+    </div>
+    
+  </div>
+  

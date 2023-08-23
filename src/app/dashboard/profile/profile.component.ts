@@ -21,7 +21,7 @@ export class ProfileComponent {
     private http: HttpClient
   ) {}
 
-  
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const sessionIdentifier = params['session'];
