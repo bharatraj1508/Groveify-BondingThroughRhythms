@@ -1,17 +1,24 @@
 <div>
-    <h2>Search for Artist</h2>
-    <form (ngSubmit)="submitForm()" #userForm="ngForm">
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" [(ngModel)]="name" required>
-      </div>
-      <button type="submit" [disabled]="!userForm.valid">Submit</button>
-    </form>
-
-    <div *ngIf="artist">
-    
-      <pre>{{ artist | json }}</pre>
+  <h2>Search for Artist</h2>
+  <form (ngSubmit)="submitForm()" #userForm="ngForm">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="searchInput" required>
     </div>
-    
+    <button type="submit" [disabled]="!userForm.valid">Submit</button>
+  </form>
+
+  <div *ngFor="let artist of artists">
+    <h3>{{ artist.name }}</h3>
+    <p>Album Type: {{ artist.album_type }}</p>
+    <p>Release Date: {{ artist.release_date }}</p>
+    <p>Total Tracks: {{ artist.total_tracks }}</p>
+    <p>Available Countries: {{artist.available_markets.length}}</p>
+    <img [src]="artist.images[2].url" alt="Album Cover" /><br/>
+    <a [href]="artist.external_urls.spotify" target="_blank">Open on Spotify</a>
+    <hr />
   </div>
   
+  
+  
+</div>
