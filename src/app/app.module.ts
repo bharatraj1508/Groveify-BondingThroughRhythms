@@ -11,6 +11,10 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { AlbumsComponent } from './dashboard/albums/albums.component';
 import { ArtistsComponent } from './dashboard/artists/artists.component';
 import { FormsModule } from '@angular/forms';
+import { HomeComponent } from './dashboard/home/home.component';
+import { ProcessingComponent } from './services/processingService/processing/processing.component';
+import { RouterModule } from '@angular/router';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,8 +24,16 @@ import { FormsModule } from '@angular/forms';
     NavbarComponent,
     AlbumsComponent,
     ArtistsComponent,
+    HomeComponent,
+    ProcessingComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    RouterModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

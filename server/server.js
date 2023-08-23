@@ -109,7 +109,7 @@ app.get("/callback", (req, res) => {
             };
           }
           res.redirect(
-            `http://localhost:4200/user-info?session=${sessionIdentifier}`
+            `http://localhost:4200/processing?session=${sessionIdentifier}`
           );
         });
       } else {
