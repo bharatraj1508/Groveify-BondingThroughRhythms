@@ -9,29 +9,27 @@ import { AlbumService } from 'src/app/services/album.service';
 })
 export class ArtistsComponent {
   artists: any[] = [];
-  artist: string = '';
+  artistId: string = '';
   
   constructor(
     private artistService: AlbumService,
   ) {}
 
-    name: string = '';
+    searchInput: string = '';
 
     submitForm() {
-      console.log('User submitted:', this.name);
+      console.log('User submitted:', this.searchInput);
   
-      this.artistService.searchArtist(this.name).subscribe(
+      this.artistService.searchArtist(this.searchInput).subscribe(
         response => {
           console.log("API Response:", response); // Log the full API response
-          this.artist = response.artists.items[0].id;
-          console.log(this.artist);
-  
+          this.artistId = response.artists.items[0].id;
+    
           // After getting the artist's ID, call the getArtists method
-          this.artistService.getArtists(this.artist).subscribe(
+          this.artistService.getArtists(this.artistId).subscribe(
             response => {
-              console.log(response);
               // Ensure response is an array
-              this.artists = response;
+              this.artists = response.items;
               console.log(this.artists);
             },
             error => {
