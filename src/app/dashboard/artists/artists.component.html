@@ -1,24 +1,27 @@
-<div>
-  <h2>Search for Artist</h2>
-  <form (ngSubmit)="submitForm()" #userForm="ngForm">
-    <div>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" [(ngModel)]="searchInput" required>
+<div class="p-8">
+  <h2 class="text-2xl font-semibold mb-4">Search for Artist</h2>
+  <form (ngSubmit)="submitForm()" #userForm="ngForm" class="mb-6">
+    <div class="mb-4">
+      <label for="name" class="block font-medium">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="searchInput" required
+             class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500">
     </div>
-    <button type="submit" [disabled]="!userForm.valid">Submit</button>
+    <button type="submit" [disabled]="!userForm.valid"
+            class="px-6 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300 hover:bg-blue-600 focus:outline-none">
+      Submit
+    </button>
   </form>
 
-  <div *ngFor="let artist of artists">
-    <h3>{{ artist.name }}</h3>
+  <div *ngFor="let artist of artists" class="mb-8">
+    <h3 class="text-xl font-semibold">{{ artist.name }}</h3>
     <p>Album Type: {{ artist.album_type }}</p>
     <p>Release Date: {{ artist.release_date }}</p>
     <p>Total Tracks: {{ artist.total_tracks }}</p>
-    <p>Available Countries: {{artist.available_markets.length}}</p>
-    <img [src]="artist.images[2].url" alt="Album Cover" /><br/>
-    <a [href]="artist.external_urls.spotify" target="_blank">Open on Spotify</a>
-    <hr />
+    <p>Available Countries: {{ artist.available_markets.length }}</p>
+    <img [src]="artist.images[2].url" alt="Album Cover" class="mt-2">
+    <br>
+    <a [href]="artist.external_urls.spotify" target="_blank"
+       class="text-blue-500 hover:underline focus:outline-none">Open on Spotify</a>
+    <hr class="my-4 border-t border-gray-300">
   </div>
-  
-  
-  
 </div>

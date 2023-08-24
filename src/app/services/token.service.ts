@@ -11,4 +11,8 @@ export class TokenService {
   setToken(token: string | null) {
     this.tokenSubject.next(token);
   }
+
+  getToken(): string | null {
+    return this.tokenSubject.value;
+  }
 }
