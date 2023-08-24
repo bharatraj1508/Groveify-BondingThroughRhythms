@@ -1,3 +1,44 @@
 <div *ngIf="userProfile">
-  <pre>{{ userProfile | json }}</pre>
+  <div
+    class="flex flex-row bg-gradient-to-b from-spotify_brown to-spotify_dark_brown text-white py-6"
+  >
+    <div class="p-4">
+      <img
+        class="rounded-full mt-10 shadow-2xl"
+        src="{{ userProfile.images[1].url }}"
+        alt=""
+      />
+    </div>
+    <div class="w-full flex flex-col justify-center p-4">
+      <p>Profile</p>
+      <p class="text-8xl font-extrabold w-fit">
+        {{ userProfile.display_name }}
+      </p>
+      <p class="w-fit">{{ userProfile.followers.total }} Followers</p>
+    </div>
+  </div>
+  <div
+    class="p-4 text-white bg-gradient-to-b from-spotify_topArtist_bg to-spotify_bg w-full"
+  >
+    <p class="text-3xl mt-10">Top artists this month</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mt-8">
+      <div
+        *ngFor="let artist of topArtistItems"
+        class="rounded-lg bg-spotify_artistcard_bg p-4 flex flex-col items-center"
+      >
+        <div class="mb-4">
+          <img
+            class="rounded-full object-cover"
+            src="{{ artist.images[1].url }}"
+            alt=""
+          />
+        </div>
+
+        <div>
+          <p class="text-gray-300 text-base">{{ artist.name }}</p>
+          <p class="text-gray-500 text-sm">{{ artist.type }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

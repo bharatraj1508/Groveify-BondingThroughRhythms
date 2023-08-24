@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlbumService } from 'src/app/services/album.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,8 +8,9 @@ import { Component } from '@angular/core';
 })
 export class ProfileComponent {
   userProfile: any;
+  topArtistItems: any[] = [];
 
-  constructor() {}
+  constructor(private albumService: AlbumService) {}
 
   ngOnInit(): void {
     const user = localStorage.getItem('user_profile');
@@ -17,5 +19,10 @@ export class ProfileComponent {
     } else {
       console.log('No user exists');
     }
+
+    this.albumService.getTopArtistThismonth().subscribe((res) => {
+      this.topArtistItems = res.items;
+      console.log(this.topArtistItems);
+    });
   }
 }
