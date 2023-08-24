@@ -5,14 +5,17 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class TokenService {
-  private tokenSubject = new BehaviorSubject<string | null>(null);
+  private tokenSubject = new BehaviorSubject<string | null>(
+    localStorage.getItem('access_token')
+  );
   token$ = this.tokenSubject.asObservable();
 
   setToken(token: string | null) {
+    if (token) {
+      localStorage.setItem('access_token', token);
+    } else {
+      localStorage.removeItem('access_token');
+    }
     this.tokenSubject.next(token);
-  }
-
-  getToken(): string | null {
-    return this.tokenSubject.value;
   }
 }

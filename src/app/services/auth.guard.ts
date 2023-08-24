@@ -21,7 +21,7 @@ export class AuthGuard {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const token = this.tokenService.getToken();
+    const token = localStorage.getItem('access_token');
     if (!token) {
       window.alert('Access not allowed!');
       this.router.navigate(['/']);
