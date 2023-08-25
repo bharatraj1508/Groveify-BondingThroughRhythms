@@ -1,10 +1,10 @@
-<div *ngIf="userProfile">
+<div *ngIf="userProfile" class="bg-spotify_bg">
   <div
     class="flex flex-row bg-gradient-to-b from-spotify_brown to-spotify_topArtist_bg text-white py-6"
   >
     <div class="p-4">
       <img
-        class="rounded-full mt-10 shadow-2xl"
+        class="rounded-full mt-24 shadow-2xl"
         src="{{ userProfile.images[1].url }}"
         alt=""
       />
@@ -18,21 +18,62 @@
     </div>
   </div>
 
-  <!-- Top Artist this month design -->
+  <!-- All time listened track and artist -->
 
   <div
-    class="p-6 text-white bg-gradient-to-b from-spotify_topArtist_bg to-spotify_bg"
+    class="py-10 flex flex-row w-full justify-evenly text-white bg-gradient-to-b from-spotify_topArtist_bg to-spotify_bg"
   >
-    <p class="text-3xl my-8">Your top artists this month</p>
-    <!-- <select
-      name="month"
-      [(ngModel)]="selectedOption"
-      (ngModelChange)="onChange()"
-    >
-      <option [ngValue]="'short_term'" selected>This month</option>
-      <option [ngValue]="'medium_term'">Past 6 months</option>
-      <option [ngValue]="'all_term'">All Time</option>
-    </select> -->
+    <div class="bg-spotify_artistcard_bg rounded-lg p-8">
+      <div class="flex flex-col items-center space-y-8">
+        <p class="text-2xl">Most Listened Artist</p>
+        <img
+          src="{{ mostListenedArtist?.images[1].url }}"
+          alt=""
+          class="rounded-full"
+        />
+        <p class="text-xl text-gray-200">{{ mostListenedArtist?.name }}</p>
+      </div>
+    </div>
+    <div class="bg-spotify_artistcard_bg rounded-lg p-8">
+      <div class="flex flex-col items-center space-y-8">
+        <p class="text-2xl">Most Listened Track</p>
+        <img
+          src="{{ mostListenedTrack?.album.images[1].url }}"
+          alt=""
+          class="rounded-full"
+        />
+        <div>
+          <p class="text-xl text-gray-200">{{ mostListenedTrack?.name }}</p>
+          <ng-container
+            *ngFor="let artist of mostListenedTrack?.artists; let last = last"
+          >
+            <p class="text-gray-500 text-sm">
+              {{ artist.name }}{{ !last ? "," : "" }}
+            </p>
+            <span *ngIf="!last">&nbsp;</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Artist this month design -->
+
+  <div class="p-6 text-white">
+    <div class="flex flex-row w-full justify-between">
+      <p class="text-3xl my-8">Your top artists {{ artist_text }}</p>
+      <select
+        #artist
+        name="artist"
+        [(ngModel)]="artist_range"
+        (ngModelChange)="onChange()"
+        class="mr-8 self-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full inline-block transition duration-300 ease-in-out"
+      >
+        <option [value]="'short_term'" selected>this month</option>
+        <option [value]="'medium_term'">from past 6 months</option>
+        <option [value]="'long_term'">all Time</option>
+      </select>
+    </div>
 
     <div class="grid grid-cols-5 gap-8 mt-4">
       <div
@@ -55,7 +96,20 @@
   <!-- Top tracks this month design -->
 
   <div class="p-6 text-white bg-spotify_bg">
-    <p class="text-3xl my-8">Your top tracks this month</p>
+    <div class="flex flex-row w-full justify-between">
+      <p class="text-3xl my-8">Your top tracks {{ track_text }}</p>
+      <select
+        #track
+        name="month"
+        [(ngModel)]="track_range"
+        (ngModelChange)="onChange()"
+        class="mr-8 self-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full inline-block transition duration-300 ease-in-out"
+      >
+        <option [value]="'short_term'" selected>this month</option>
+        <option [value]="'medium_term'">past 6 months</option>
+        <option [value]="'long_term'">all Time</option>
+      </select>
+    </div>
     <div class="grid grid-cols-2 gap-8 mt-4">
       <div class="col-span-1">
         <ng-container *ngFor="let track of topTracksItems; let i = index">

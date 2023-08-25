@@ -8,7 +8,6 @@ import { ProfileComponent } from './dashboard/profile/profile.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LandingPageComponent } from './layout/landing-page/landing-page.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
-import { AlbumsComponent } from './dashboard/albums/albums.component';
 import { ArtistsComponent } from './dashboard/artists/artists.component';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './dashboard/home/home.component';
@@ -22,7 +21,6 @@ import { RouterModule } from '@angular/router';
     HeaderComponent,
     LandingPageComponent,
     NavbarComponent,
-    AlbumsComponent,
     ArtistsComponent,
     HomeComponent,
     ProcessingComponent,

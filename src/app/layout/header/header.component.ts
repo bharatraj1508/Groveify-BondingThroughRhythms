@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from 'src/app/services/token.service';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +9,19 @@ import { TokenService } from 'src/app/services/token.service';
 })
 export class HeaderComponent implements OnInit {
   token: string | null = null;
+  isScrolled: boolean = false;
 
   constructor(private tokenService: TokenService) {}
+
+  @HostListener('window:scroll', ['$event.target'])
+  scroll(e: any) {
+    let scroll = window.scrollY;
+    if (scroll > 50) {
+      this.isScrolled = true;
+    } else if (scroll === 0) {
+      this.isScrolled = false;
+    }
+  }
 
   ngOnInit(): void {
     this.tokenService.token$.subscribe((token) => {
