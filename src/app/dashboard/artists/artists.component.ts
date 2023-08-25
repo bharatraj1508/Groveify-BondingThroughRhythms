@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlbumService } from 'src/app/services/album.service';
+import { AlbumService } from '../../services/album.service';
+
 
 @Component({
   selector: 'app-artists',
