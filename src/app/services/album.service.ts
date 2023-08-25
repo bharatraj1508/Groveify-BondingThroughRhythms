@@ -23,7 +23,6 @@ export class AlbumService {
   }
 
   searchArtist(name: string): Observable<any> {
-    console.log(name);
     const endpoint = `${this.base_url}/search?q=${name}&type=artist`;
 
     const headers = new HttpHeaders({
@@ -33,9 +32,29 @@ export class AlbumService {
     return this.http.get(endpoint, { headers: headers });
   }
 
-  getArtists(id: string): Observable<any> {
-    console.log(id);
+  getArtist(id: string): Observable<any> {
+    const endpoint = `${this.base_url}/artists/${id}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    });
+
+    // Use the HttpClient to make the GET request
+    return this.http.get(endpoint, { headers: headers });
+  }
+
+
+  getArtistsAlbum(id: string): Observable<any> {
     const endpoint = `${this.base_url}/artists/${id}/albums`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    });
+
+    // Use the HttpClient to make the GET request
+    return this.http.get(endpoint, { headers: headers });
+  }
+
+  getArtistsTopTracks(id: string): Observable<any> {
+    const endpoint = `${this.base_url}/artists/${id}/top-tracks?market=CA`;
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,

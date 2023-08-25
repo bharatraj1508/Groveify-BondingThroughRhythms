@@ -18,17 +18,19 @@ export class ProfileComponent {
     const user = localStorage.getItem('user_profile');
     if (user) {
       this.userProfile = JSON.parse(user);
+      console.log("User: ", user);
     } else {
       console.log('No user exists');
     }
 
     this.albumService.getTopArtistsThismonth().subscribe((res) => {
       this.topArtistItems = res.items;
+      console.log("Artist: ",this.topArtistItems)
     });
 
     this.albumService.getTopTracksThismonth().subscribe((res) => {
       this.topTracksItems = res.items;
-      console.log(this.topTracksItems);
+      console.log("Tracks: ",this.topTracksItems);
     });
   }
 
