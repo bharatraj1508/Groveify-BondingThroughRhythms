@@ -1,6 +1,6 @@
 <div *ngIf="userProfile">
   <div
-    class="flex flex-row bg-gradient-to-b from-spotify_brown to-spotify_dark_brown text-white py-6"
+    class="flex flex-row bg-gradient-to-b from-spotify_brown to-spotify_topArtist_bg text-white py-6"
   >
     <div class="p-4">
       <img
@@ -17,27 +17,105 @@
       <p class="w-fit">{{ userProfile.followers.total }} Followers</p>
     </div>
   </div>
+
+  <!-- Top Artist this month design -->
+
   <div
-    class="p-4 text-white bg-gradient-to-b from-spotify_topArtist_bg to-spotify_bg w-full"
+    class="p-6 text-white bg-gradient-to-b from-spotify_topArtist_bg to-spotify_bg"
   >
-    <p class="text-3xl mt-10">Top artists this month</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mt-8">
+    <p class="text-3xl my-8">Your top artists this month</p>
+    <!-- <select
+      name="month"
+      [(ngModel)]="selectedOption"
+      (ngModelChange)="onChange()"
+    >
+      <option [ngValue]="'short_term'" selected>This month</option>
+      <option [ngValue]="'medium_term'">Past 6 months</option>
+      <option [ngValue]="'all_term'">All Time</option>
+    </select> -->
+
+    <div class="grid grid-cols-5 gap-8 mt-4">
       <div
         *ngFor="let artist of topArtistItems"
-        class="rounded-lg bg-spotify_artistcard_bg p-4 flex flex-col items-center"
+        class="rounded-lg bg-spotify_artistcard_bg py-4 flex flex-col space-y-6"
       >
-        <div class="mb-4">
-          <img
-            class="rounded-full object-cover"
-            src="{{ artist.images[1].url }}"
-            alt=""
-          />
-        </div>
-
-        <div>
-          <p class="text-gray-300 text-base">{{ artist.name }}</p>
+        <img
+          class="rounded-full self-center"
+          src="{{ artist.images[2].url }}"
+          alt=""
+        />
+        <div class="ml-8">
+          <p class="text-gray-300 text-base line-clamp-1">{{ artist.name }}</p>
           <p class="text-gray-500 text-sm">{{ artist.type }}</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top tracks this month design -->
+
+  <div class="p-6 text-white bg-spotify_bg">
+    <p class="text-3xl my-8">Your top tracks this month</p>
+    <div class="grid grid-cols-2 gap-8 mt-4">
+      <div class="col-span-1">
+        <ng-container *ngFor="let track of topTracksItems; let i = index">
+          <div
+            class="rounded-lg bg-spotify_artistcard_bg py-4 flex flex-row space-x-6"
+            *ngIf="i < 5"
+          >
+            <p class="self-center ml-4 text-gray-300">{{ i + 1 }}</p>
+            <img
+              class="rounded-full self-center"
+              src="{{ track.album.images[2].url }}"
+              alt=""
+            />
+            <div>
+              <p class="text-gray-300 text-base line-clamp-1">
+                {{ track.name }}
+              </p>
+              <div class="flex flex-row">
+                <ng-container
+                  *ngFor="let artist of track.artists; let last = last"
+                >
+                  <p class="text-gray-500 text-sm">
+                    {{ artist.name }}{{ !last ? "," : "" }}
+                  </p>
+                  <span *ngIf="!last">&nbsp;</span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-span-1">
+        <ng-container *ngFor="let track of topTracksItems; let i = index">
+          <div
+            class="rounded-lg bg-spotify_artistcard_bg py-4 flex flex-row space-x-6"
+            *ngIf="i >= 5"
+          >
+            <p class="self-center ml-4 text-gray-300">{{ i + 1 }}</p>
+            <img
+              class="rounded-full self-center"
+              src="{{ track.album.images[2].url }}"
+              alt=""
+            />
+            <div>
+              <p class="text-gray-300 text-base line-clamp-1">
+                {{ track.name }}
+              </p>
+              <div class="flex flex-row">
+                <ng-container
+                  *ngFor="let artist of track.artists; let last = last"
+                >
+                  <p class="text-gray-500 text-sm">
+                    {{ artist.name }}{{ !last ? "," : "" }}
+                  </p>
+                  <span *ngIf="!last">&nbsp;</span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

@@ -9,6 +9,8 @@ import { AlbumService } from 'src/app/services/album.service';
 export class ProfileComponent {
   userProfile: any;
   topArtistItems: any[] = [];
+  topTracksItems: any[] = [];
+  selectedOption = 'short_term';
 
   constructor(private albumService: AlbumService) {}
 
@@ -20,9 +22,17 @@ export class ProfileComponent {
       console.log('No user exists');
     }
 
-    this.albumService.getTopArtistThismonth().subscribe((res) => {
+    this.albumService.getTopArtistsThismonth().subscribe((res) => {
       this.topArtistItems = res.items;
-      console.log(this.topArtistItems);
     });
+
+    this.albumService.getTopTracksThismonth().subscribe((res) => {
+      this.topTracksItems = res.items;
+      console.log(this.topTracksItems);
+    });
+  }
+
+  onChange() {
+    console.log(this.selectedOption);
   }
 }
