@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlbumService } from 'src/app/services/album.service';
 
 @Component({
@@ -6,15 +6,27 @@ import { AlbumService } from 'src/app/services/album.service';
   templateUrl: './artists.component.html',
   styleUrls: ['./artists.component.css']
 })
-export class ArtistsComponent {
+export class ArtistsComponent implements OnInit {
+  relatedArtist: any = {};
   artist: any = {};
   albums: any[] = [];
   topTracks: any[] = [];
   temp : number = 0;
+  country: any = {};
 
   constructor(private albumService: AlbumService) {}
 
   searchInput: string = '';
+
+  ngOnInit()
+  {
+    this.albumService.getCountries().subscribe(
+      countryResponse => {
+        this.country = countryResponse;
+        console.log(this.country)
+      }
+    )
+  }
 
   submitForm() {
 
@@ -50,7 +62,6 @@ export class ArtistsComponent {
           this.albumService.getArtistsTopTracks(artistId).subscribe(
             topTracksResponse => {
 
-              var tempTracks: any[] = [];
               this.topTracks = topTracksResponse.tracks;
               console.log('Top Tracks:', this.topTracks);
             },
@@ -58,6 +69,18 @@ export class ArtistsComponent {
               console.error('Failed to get top tracks:', error);
             }
           );
+
+          this.albumService.getRelatedArtists(artistId).subscribe(
+            relatedArtistResponse => {
+
+              this.relatedArtist = relatedArtistResponse;
+              console.log('Related Artist:', this.relatedArtist);
+            },
+            error => {
+              console.error('Failed to get related Artists:', error);
+            }
+          );
+
         } else {
           console.log('No artists found.');
           this.artist = [];

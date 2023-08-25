@@ -10,6 +10,14 @@ export class AlbumService {
 
   constructor(private http: HttpClient) {}
 
+  getCountries(): Observable<any> {
+    const endpoint = "https://restcountries.com/v3.1/all";
+
+   
+    // Use the HttpClient to make the GET request
+    return this.http.get(endpoint);
+  }
+
   getAlbums(): Observable<any> {
     const id = '4aawyAB9vmqN3uQ7FjRGTy';
     const endpoint = `${this.base_url}/albums/${id}`;
@@ -63,6 +71,20 @@ export class AlbumService {
     // Use the HttpClient to make the GET request
     return this.http.get(endpoint, { headers: headers });
   }
+
+
+  getRelatedArtists(id: string): Observable<any> {
+    const endpoint = `${this.base_url}/artists/${id}/related-artists`;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    });
+
+    // Use the HttpClient to make the GET request
+    return this.http.get(endpoint, { headers: headers });
+  }
+
+
 
   getTopArtistsThismonth(): Observable<any> {
     const endpoint = `${this.base_url}/me/top/artists?time_range=short_term&limit=10&offset=0`;
