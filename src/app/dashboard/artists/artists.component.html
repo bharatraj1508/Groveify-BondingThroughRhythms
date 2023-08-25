@@ -1,10 +1,10 @@
-<div class="p-8">
-  <h2 class="text-2xl font-semibold mb-4">Search for Artist</h2>
+<div class="bg-black text-white p-8">
+  <h2 class="text-2xl font-semibold mb-4">Rhythm Radar</h2>
   <form (ngSubmit)="submitForm()" #userForm="ngForm" class="mb-6">
     <div class="mb-4">
-      <label for="name" class="block font-medium">Name:</label>
+      <label for="name" class="block font-medium">Artist Name:</label>
       <input type="text" id="name" name="name" [(ngModel)]="searchInput" required
-             class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500">
+             class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-800 text-white focus:outline-none focus:border-blue-500">
     </div>
     <button type="submit" [disabled]="!userForm.valid"
             class="px-6 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300 hover:bg-blue-600 focus:outline-none">
@@ -12,16 +12,67 @@
     </button>
   </form>
 
-  <div *ngFor="let artist of artists" class="mb-8">
-    <h3 class="text-xl font-semibold">{{ artist.name }}</h3>
-    <p>Album Type: {{ artist.album_type }}</p>
-    <p>Release Date: {{ artist.release_date }}</p>
-    <p>Total Tracks: {{ artist.total_tracks }}</p>
-    <p>Available Countries: {{ artist.available_markets.length }}</p>
-    <img [src]="artist.images[2].url" alt="Album Cover" class="mt-2">
-    <br>
-    <a [href]="artist.external_urls.spotify" target="_blank"
-       class="text-blue-500 hover:underline focus:outline-none">Open on Spotify</a>
-    <hr class="my-4 border-t border-gray-300">
+  <div *ngIf="temp == 1">
+    <div class="bg-black text-white h-screen flex flex-col justify-center items-center p-8">
+      <div class="bg-gray-800 rounded-lg overflow-hidden shadow-md p-6 mt-4 mb-4" style="width: 400px;">
+        <img [src]="artist.images[0].url" alt="Artist Image" class="h-48 w-48 rounded-full mx-auto mb-4">
+        <h2 class="text-3xl font-semibold">{{ artist.name }}</h2>
+        <p class="text-gray-300 text-lg">{{ artist.followers.total | number }} Followers</p>
+        <p class="text-gray-300 text-lg">Genres: {{ artist.genres.join(', ') }}</p>
+        <p class="text-gray-300 text-lg">Popularity: {{ artist.popularity }}%</p>
+        <a [href]="artist.external_urls.spotify" target="_blank" class="block mt-4 text-green-500 hover:underline focus:outline-none">Open on Spotify</a>
+      </div>
+    </div>
   </div>
+  
+
+<div *ngIf="temp == 1">
+  <h2 class="text-2xl font-semibold mb-4">Top Albums</h2>  
+  <div class="flex flex-wrap -mx-3">
+    <div *ngFor="let artist of albums; let i = index" class="mb-8 px-3 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+      <div *ngIf="i < 4" class="bg-gray-800 rounded-lg overflow-hidden shadow-md">
+        <img [src]="artist.images[0].url" alt="Album Cover" class="h-64 object-cover rounded-t-lg">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold text-white">{{ artist.name }}</h3>
+          <p class="text-gray-300"><b>Album Type:</b> {{ artist.album_type }}</p>
+          <p class="text-gray-300"><b>Total Tracks:</b> {{ artist.total_tracks }}</p>
+          <p class="text-gray-300"><b>Release Date:</b> {{ artist.release_date }}</p>
+          <p class="text-gray-300"><b>Available Countries:</b> {{ artist.available_markets.length }}</p>
+          <a [href]="artist.external_urls.spotify" target="_blank"
+             class="block mt-2 text-green-500 hover:underline focus:outline-none">Open on Spotify</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+   
+<div *ngIf="temp == 1">
+  <!-- Display top tracks information -->
+  <div class="mb-8">
+    <h2 class="text-xl font-semibold">Top Tracks</h2>
+    
+    <!-- Flex container for top tracks -->
+    <div class="flex flex-wrap -mx-5">
+      <div *ngFor="let track of topTracks" class="mb-4 px-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+        <div class="bg-gray-800 rounded-lg overflow-hidden shadow-md p-4">
+          <img [src]="track.album.images[0].url" alt="Album Cover" class="h-32 object-cover rounded-lg">
+          <p class="text-xl font-semibold text-white">{{ track.name }}</p>
+
+          <!-- Display artists in a single line -->
+          <div class="flex items-center text-gray-300">
+            <ng-container *ngFor="let artist of track.album.artists">
+              <div class="text-gray-300 pr-1">{{ artist.name }}</div>
+            </ng-container>
+          </div>
+          <p class="text-gray-300">{{track.type }}</p>
+          <p class="text-gray-300">Popularity: {{ track.popularity }}</p>
+          <p class="text-gray-300">{{ track.duration_ms | date:'mm:ss' }}</p>
+          <p class="text-gray-300">Album Name: {{ track.album.name }}</p>
+          <p class="text-gray-300">Album Type: {{ track.album.album_type }}</p>
+          <a [href]="track.external_urls.spotify" target="_blank" class="block mt-2 text-green-500 hover:underline focus:outline-none">Open on Spotify</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
