@@ -1,21 +1,34 @@
-<div class="p-5 border border-black">
-  <div *ngIf="!token">
-    <a
-      href="http://localhost:8888/login"
-      class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full inline-block transition duration-300 ease-in-out"
+<ng-template #loginButton>
+  <a
+    href="http://localhost:8888/login"
+    class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full inline-block transition duration-300 ease-in-out"
+  >
+    Login to Spotify
+  </a>
+</ng-template>
+
+<ng-template #logoutButton>
+  <a href="http://localhost:4200/">
+    <button
+      (click)="logout()"
+      [class.bg-spotify_artistcard_bg]="isScrolled"
+      class="bg-green-500 hover:bg-green-900 text-white font-semibold py-2 px-4 rounded-2xl focus:outline-none focus:ring focus:ring-gray-300"
     >
-      Login to Spotify
-    </a>
+      Log out
+    </button>
+  </a>
+</ng-template>
+
+<div
+  [class.bg-spotify_artistcard_bg]="!isScrolled"
+  [class.bg-green-600]="isScrolled"
+  class="p-5 text-gray-200 fixed w-full scroll-smooth transition-all duration-500"
+>
+  <div *ngIf="!token">
+    <ng-container *ngTemplateOutlet="loginButton"></ng-container>
   </div>
-  <div class="flex flex-row space-x-8 justify-end" *ngIf="token">
+  <div class="flex flex-row space-x-8 justify-end items-center" *ngIf="token">
     <app-navbar />
-    <a href="http://localhost:4200/">
-      <button
-        (click)="logout()"
-        class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-gray-300"
-      >
-        Log out
-      </button>
-    </a>
+    <ng-container *ngTemplateOutlet="logoutButton"></ng-container>
   </div>
 </div>

@@ -42,7 +42,6 @@ export class AlbumService {
     return this.http.get(endpoint, { headers: headers });
   }
 
-
   getArtistsAlbum(id: string): Observable<any> {
     const endpoint = `${this.base_url}/artists/${id}/albums`;
     const headers = new HttpHeaders({
@@ -64,8 +63,8 @@ export class AlbumService {
     return this.http.get(endpoint, { headers: headers });
   }
 
-  getTopArtistsThismonth(): Observable<any> {
-    const endpoint = `${this.base_url}/me/top/artists?time_range=short_term&limit=10&offset=0`;
+  getTopArtistsThismonth(range: string): Observable<any> {
+    const endpoint = `${this.base_url}/me/top/artists?time_range=${range}&limit=10&offset=0`;
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -74,8 +73,8 @@ export class AlbumService {
     return this.http.get(endpoint, { headers: headers });
   }
 
-  getTopTracksThismonth(): Observable<any> {
-    const endpoint = `${this.base_url}/me/top/tracks?time_range=short_term&limit=10&offset=0`;
+  getTopTracksThismonth(range: string): Observable<any> {
+    const endpoint = `${this.base_url}/me/top/tracks?time_range=${range}&limit=10&offset=0`;
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
