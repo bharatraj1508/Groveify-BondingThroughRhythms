@@ -6,10 +6,12 @@
       <input type="text" id="name" name="name" [(ngModel)]="searchInput" required
              class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-800 text-white focus:outline-none focus:border-blue-500">
       
-      <!-- Dropdown select for countries -->
-      <select name="countries" class="ml-3 border border-gray-300 rounded px-2 py-1 bg-gray-800 text-white focus:outline-none">
-        <option *ngFor="let country of country" [value]="country.fifa">{{ country.name.common }}</option>
-      </select>
+             <select name="countries" class="ml-3 border border-gray-300 rounded px-2 py-1
+              bg-gray-800 text-white focus:outline-none" [(ngModel)]="selectedCountry">
+              <option value="" disabled selected>Select a country</option>
+              <option *ngFor="let country of country" [value]="country.cca2">{{ country.name.common }}</option>
+            </select>
+            
     </div>
     <button type="submit" [disabled]="!userForm.valid"
             class="px-6 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300 hover:bg-blue-600 focus:outline-none transition duration-300">

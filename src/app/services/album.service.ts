@@ -61,8 +61,9 @@ export class AlbumService {
     return this.http.get(endpoint, { headers: headers });
   }
 
-  getArtistsTopTracks(id: string): Observable<any> {
-    const endpoint = `${this.base_url}/artists/${id}/top-tracks?market=CA`;
+  getArtistsTopTracks(id: string, country: string): Observable<any> {
+    
+    const endpoint = `${this.base_url}/artists/${id}/top-tracks?market=${country}`;
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -83,11 +84,8 @@ export class AlbumService {
     // Use the HttpClient to make the GET request
     return this.http.get(endpoint, { headers: headers });
   }
-
-
-
-  getTopArtistsThismonth(): Observable<any> {
-    const endpoint = `${this.base_url}/me/top/artists?time_range=short_term&limit=10&offset=0`;
+  getTopArtistsThismonth(range: string): Observable<any> {
+    const endpoint = `${this.base_url}/me/top/artists?time_range=${range}&limit=10&offset=0`;
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -96,8 +94,8 @@ export class AlbumService {
     return this.http.get(endpoint, { headers: headers });
   }
 
-  getTopTracksThismonth(): Observable<any> {
-    const endpoint = `${this.base_url}/me/top/tracks?time_range=short_term&limit=10&offset=0`;
+  getTopTracksThismonth(range: string): Observable<any> {
+    const endpoint = `${this.base_url}/me/top/tracks?time_range=${range}&limit=10&offset=0`;
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
