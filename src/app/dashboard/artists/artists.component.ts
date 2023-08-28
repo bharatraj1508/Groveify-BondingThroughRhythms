@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlbumService } from 'src/app/services/album.service';
 
 @Component({
@@ -6,18 +6,34 @@ import { AlbumService } from 'src/app/services/album.service';
   templateUrl: './artists.component.html',
   styleUrls: ['./artists.component.css']
 })
-export class ArtistsComponent {
+export class ArtistsComponent implements OnInit {
+  relatedArtist: any = {};
   artist: any = {};
   albums: any[] = [];
   topTracks: any[] = [];
   temp : number = 0;
+  country: any = {};
+  selectedCountry: string | null = null;
+  searchInput: string = '';
 
   constructor(private albumService: AlbumService) {}
 
-  searchInput: string = '';
+  
 
+  ngOnInit() {
+    this.albumService.getCountries().subscribe(
+      (countryResponse: any[]) => {
+        this.country = countryResponse;
+  
+        // Sort the countries alphabetically by their common names
+        this.country.sort((a: any, b: any) => a.name.common.localeCompare(b.name.common));
+        console.log(this.country);
+      }
+    );
+  }
   submitForm() {
 
+    console.log("Country",this.selectedCountry);
     this.temp = 1;
     this.albumService.searchArtist(this.searchInput).subscribe(
       artistResponse => {
@@ -47,17 +63,43 @@ export class ArtistsComponent {
             }
           );
 
-          this.albumService.getArtistsTopTracks(artistId).subscribe(
-            topTracksResponse => {
+          
+          if (this.selectedCountry == null) {
+            this.selectedCountry = "CA";
+            this.albumService.getArtistsTopTracks(artistId, this.selectedCountry).subscribe(
+              topTracksResponse => {
+                this.topTracks = topTracksResponse.tracks;
+                console.log('Top Tracks:', this.topTracks);
+              },
+              error => {
+                console.error('Failed to get top tracks:', error);
+              }
+            );
+          } else {
+            this.albumService.getArtistsTopTracks(artistId, this.selectedCountry).subscribe(
+              topTracksResponse => {
+                this.topTracks = topTracksResponse.tracks;
+                console.log('Top Tracks:', this.topTracks);
+              },
+              error => {
+                console.error('Failed to get top tracks:', error);
+              }
+            );
+            this.topTracks = [];
+          }
+    
 
-              var tempTracks: any[] = [];
-              this.topTracks = topTracksResponse.tracks;
-              console.log('Top Tracks:', this.topTracks);
+          this.albumService.getRelatedArtists(artistId).subscribe(
+            relatedArtistResponse => {
+
+              this.relatedArtist = relatedArtistResponse;
+              console.log('Related Artist:', this.relatedArtist);
             },
             error => {
-              console.error('Failed to get top tracks:', error);
+              console.error('Failed to get related Artists:', error);
             }
           );
+
         } else {
           console.log('No artists found.');
           this.artist = [];
