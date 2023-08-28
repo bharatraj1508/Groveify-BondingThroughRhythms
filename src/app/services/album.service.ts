@@ -50,7 +50,6 @@ export class AlbumService {
     return this.http.get(endpoint, { headers: headers });
   }
 
-
   getArtistsAlbum(id: string): Observable<any> {
     const endpoint = `${this.base_url}/artists/${id}/albums`;
     const headers = new HttpHeaders({
@@ -74,6 +73,7 @@ export class AlbumService {
   }
 
 
+
   getRelatedArtists(id: string): Observable<any> {
     const endpoint = `${this.base_url}/artists/${id}/related-artists`;
 
@@ -84,6 +84,7 @@ export class AlbumService {
     // Use the HttpClient to make the GET request
     return this.http.get(endpoint, { headers: headers });
   }
+  
   getTopArtistsThismonth(range: string): Observable<any> {
     const endpoint = `${this.base_url}/me/top/artists?time_range=${range}&limit=10&offset=0`;
 
