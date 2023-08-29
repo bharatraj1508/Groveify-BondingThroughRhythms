@@ -3,6 +3,7 @@ import { AlbumService } from 'src/app/services/album.service';
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { forkJoin } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -19,6 +20,7 @@ export class ProfileComponent {
   track_text = 'this month';
   mostListenedArtist: any;
   mostListenedTrack: any;
+  publicPlaylist: any = {};
 
   @ViewChild('artist') artist!: ElementRef<HTMLSelectElement>;
   @ViewChild('track') track!: ElementRef<HTMLSelectElement>;
@@ -29,32 +31,9 @@ export class ProfileComponent {
     const user = localStorage.getItem('user_profile');
     if (user) {
       this.userProfile = JSON.parse(user);
-      console.log('User: ', user);
     } else {
       console.log('No user exists');
     }
-
-    // this.albumService
-    //   .getTopArtistsThismonth(this.artist_range)
-    //   .subscribe((res) => {
-    //     this.topArtistItems = res.items;
-    //     console.log('Artist: ', this.topArtistItems);
-    //   });
-
-    // this.albumService
-    //   .getTopTracksThismonth(this.track_range)
-    //   .subscribe((res) => {
-    //     this.topTracksItems = res.items;
-    //     console.log('Tracks: ', this.topTracksItems);
-    //   });
-
-    // this.albumService.getTopArtistsThismonth('long_term').subscribe((res) => {
-    //   this.mostListenedArtist = res.items[0];
-    // });
-
-    // this.albumService.getTopTracksThismonth('long_term').subscribe((res) => {
-    //   this.mostListenedTrack = res.items[0];
-    // });
 
     const topArtists$ = this.albumService.getTopArtistsThismonth(
       this.artist_range
@@ -67,22 +46,39 @@ export class ProfileComponent {
     const mostListenedTrack$ =
       this.albumService.getTopTracksThismonth('long_term');
 
+    const publicPlaylist$ = this.albumService.getCurrentUserPlaylist();
+
     forkJoin([
       topArtists$,
       topTracks$,
       mostListenedArtist$,
       mostListenedTrack$,
+      publicPlaylist$.pipe(
+        map((res) => {
+          const publicpublicPlaylist = res.items.filter(
+            (item: any) => item.public === true
+          );
+
+          return {
+            ...res,
+            items: publicpublicPlaylist,
+          };
+        })
+      ),
     ]).subscribe(
       ([
         topArtistsRes,
         topTracksRes,
         mostListenedArtistRes,
         mostListenedTrackRes,
+        publicPlaylistRes,
       ]) => {
         this.topArtistItems = topArtistsRes.items;
         this.topTracksItems = topTracksRes.items;
         this.mostListenedArtist = mostListenedArtistRes.items[0];
         this.mostListenedTrack = mostListenedTrackRes.items[0];
+        this.publicPlaylist = publicPlaylistRes;
+        console.log(this.publicPlaylist);
       }
     );
   }
