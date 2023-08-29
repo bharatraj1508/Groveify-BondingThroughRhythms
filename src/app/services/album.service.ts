@@ -11,9 +11,8 @@ export class AlbumService {
   constructor(private http: HttpClient) {}
 
   getCountries(): Observable<any> {
-    const endpoint = "https://restcountries.com/v3.1/all";
+    const endpoint = 'https://restcountries.com/v3.1/all';
 
-   
     // Use the HttpClient to make the GET request
     return this.http.get(endpoint);
   }
@@ -61,7 +60,6 @@ export class AlbumService {
   }
 
   getArtistsTopTracks(id: string, country: string): Observable<any> {
-    
     const endpoint = `${this.base_url}/artists/${id}/top-tracks?market=${country}`;
 
     const headers = new HttpHeaders({
@@ -71,8 +69,6 @@ export class AlbumService {
     // Use the HttpClient to make the GET request
     return this.http.get(endpoint, { headers: headers });
   }
-
-
 
   getRelatedArtists(id: string): Observable<any> {
     const endpoint = `${this.base_url}/artists/${id}/related-artists`;
@@ -84,7 +80,7 @@ export class AlbumService {
     // Use the HttpClient to make the GET request
     return this.http.get(endpoint, { headers: headers });
   }
-  
+
   getTopArtistsThismonth(range: string): Observable<any> {
     const endpoint = `${this.base_url}/me/top/artists?time_range=${range}&limit=10&offset=0`;
 
@@ -97,6 +93,16 @@ export class AlbumService {
 
   getTopTracksThismonth(range: string): Observable<any> {
     const endpoint = `${this.base_url}/me/top/tracks?time_range=${range}&limit=10&offset=0`;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    });
+
+    return this.http.get(endpoint, { headers: headers });
+  }
+
+  getCurrentUserPlaylist(): Observable<any> {
+    const endpoint = `${this.base_url}/me/playlists?limit=50&offset=0`;
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,

@@ -2,19 +2,24 @@
   <div
     class="flex flex-row bg-gradient-to-b from-spotify_brown to-spotify_topArtist_bg text-white py-6"
   >
-    <div class="p-4">
+    <div class="p-4 mt-24">
       <img
-        class="rounded-full mt-24 shadow-2xl"
+        class="rounded-full shadow-2xl"
         src="{{ userProfile.images[1].url }}"
         alt=""
       />
     </div>
-    <div class="w-full flex flex-col justify-center p-4">
+    <div class="w-full flex flex-col justify-center p-4 mt-24">
       <p>Profile</p>
       <p class="text-8xl font-extrabold w-fit">
         {{ userProfile.display_name }}
       </p>
-      <p class="w-fit">{{ userProfile.followers.total }} Followers</p>
+      <ul class="flex flex-row gap-4 w-fit">
+        <li *ngIf="publicPlaylist.items">
+          &#8226; {{ publicPlaylist.items.length }} public playlist
+        </li>
+        <li>&#8226; {{ userProfile.followers.total }} Followers</li>
+      </ul>
     </div>
   </div>
 
@@ -170,6 +175,33 @@
             </div>
           </div>
         </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Public playlist design -->
+
+  <div class="p-6 text-white">
+    <p class="text-3xl my-8">Your playlists</p>
+
+    <div class="grid grid-cols-5 gap-8 mt-4" *ngIf="publicPlaylist.items">
+      <div
+        *ngFor="let playlist of publicPlaylist.items"
+        class="rounded-lg bg-spotify_artistcard_bg py-4 flex flex-col space-y-6"
+      >
+        <img
+          class="rounded-full self-center"
+          src="{{ playlist.images[1].url }}"
+          alt=""
+        />
+        <div class="ml-8 text-center">
+          <p class="text-gray-300 text-base line-clamp-1">
+            {{ playlist.name }}
+          </p>
+          <p class="text-gray-500 text-sm" *ngIf="playlist.tracks">
+            {{ playlist.tracks.total }} tracks
+          </p>
+        </div>
       </div>
     </div>
   </div>
